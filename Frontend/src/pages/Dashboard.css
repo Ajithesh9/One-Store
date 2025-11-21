@@ -1,5 +1,6 @@
 .dashboard-page {
-  @apply min-h-screen bg-[#0C0E12] pt-28 px-6 md:px-12 text-white font-sans;
+  /* Added 'pb-24' to create space before the Footer */
+  @apply min-h-screen bg-[#0C0E12] pt-28 pb-24 px-6 md:px-12 text-white font-sans;
 }
 
 .dashboard-container {
