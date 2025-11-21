@@ -3,17 +3,16 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
-// Routes Imports
+// Route Imports
 const userRoutes = require('./routes/userRoutes');
-// Make sure orderRoutes is imported if you created it previously
-// const orderRoutes = require('./routes/orderRoutes'); 
-const paymentRoutes = require('./routes/paymentRoutes'); // NEW: Import Payment
+const orderRoutes = require('./routes/orderRoutes');   // NEW: Import Orders
+const paymentRoutes = require('./routes/paymentRoutes'); // NEW: Import Payments
 
 const app = express();
 
-connectDB();
+connectDB(); // Connect to Database
 
-app.use(express.json());
+app.use(express.json()); 
 app.use(cors());
 
 app.get('/', (req, res) => {
@@ -22,8 +21,8 @@ app.get('/', (req, res) => {
 
 // Mount Routes
 app.use('/api/users', userRoutes);
-// app.use('/api/orders', orderRoutes); 
-app.use('/api/payment', paymentRoutes); // NEW: Mount Payment Route
+app.use('/api/orders', orderRoutes);     // NEW: Enable Orders URL
+app.use('/api/payment', paymentRoutes);  // NEW: Enable Payments URL
 
 const PORT = process.env.PORT || 5000;
 
