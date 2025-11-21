@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/:path*",
-            "destination": "https://your-backend-url.onrender.com/api/:match*"
+            "destination": "https://one-store-5gql.onrender.com/api/:match*"
         },
         {
             "source": "/(.*)",
