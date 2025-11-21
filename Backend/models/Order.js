@@ -5,13 +5,13 @@ const orderSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User', // Connects this order to the User model
+      ref: 'User',
     },
     orderItems: [
       {
         name: { type: String, required: true },
         price: { type: Number, required: true },
-        product: { type: String, required: true }, // e.g., 'gold-plan'
+        product: { type: String, required: true },
         image: { type: String },
       },
     ],
@@ -20,11 +20,11 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: 'Card',
     },
-    paymentResult: { // Data from Stripe/PayPal
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
+    // ADDED: itemsPrice was missing causing validation issues
+    itemsPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
     },
     taxPrice: {
       type: Number,
@@ -39,12 +39,13 @@ const orderSchema = mongoose.Schema(
     isPaid: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true, // Mark as true since we save ONLY after Stripe success
     },
     paidAt: {
       type: Date,
+      default: Date.now,
     },
-    isDelivered: { // For us, this means "PDF Sent"
+    isDelivered: {
       type: Boolean,
       required: true,
       default: false,
