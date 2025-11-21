@@ -1,0 +1,61 @@
+.admin-page {
+  @apply min-h-screen bg-[#0C0E12] pt-28 px-6 md:px-12 text-white font-sans;
+}
+
+.admin-container {
+  @apply max-w-7xl mx-auto;
+}
+
+.admin-header {
+  @apply flex justify-between items-center mb-10;
+}
+
+.admin-logout {
+  @apply px-4 py-2 border border-red-500/30 text-red-400 rounded hover:bg-red-500/10;
+}
+
+/* Stats Grid */
+.admin-stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-4 gap-6 mb-10;
+}
+
+.admin-stat-card {
+  @apply bg-[#1E1E1E] p-6 rounded-xl border border-gray-800 flex items-center gap-4;
+}
+
+.admin-stat-icon-wrapper {
+  @apply p-3 rounded-lg;
+}
+
+/* Table */
+.admin-table-container {
+  @apply bg-[#1E1E1E] rounded-xl border border-gray-800 overflow-hidden;
+}
+
+.admin-table-header {
+  @apply p-6 border-b border-gray-800;
+}
+
+.admin-table {
+  @apply w-full text-left;
+}
+
+.admin-thead {
+  @apply bg-[#252525] text-gray-400 uppercase text-xs;
+}
+
+.admin-th {
+  @apply px-6 py-4;
+}
+
+.admin-row {
+  @apply hover:bg-white/5 transition;
+}
+
+.admin-td {
+  @apply px-6 py-4;
+}
+
+.admin-status-paid {
+  @apply px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/20;
+}

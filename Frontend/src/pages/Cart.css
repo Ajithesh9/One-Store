@@ -1,0 +1,62 @@
+.cart-page {
+  @apply min-h-screen bg-[#0C0E12] pt-28 px-6 md:px-12 text-white font-sans;
+}
+
+.cart-container {
+  @apply max-w-4xl mx-auto;
+}
+
+.back-link-wrapper {
+  @apply inline-flex items-center text-gray-400 hover:text-white mb-6 transition;
+}
+
+.cart-title {
+  @apply text-3xl font-bold mb-8 text-[#BB86FC];
+}
+
+/* Empty State */
+.cart-empty {
+  @apply text-center py-12 bg-[#1E1E1E] rounded-xl border border-gray-800;
+}
+
+.cart-empty-btn {
+  @apply inline-block px-6 py-3 bg-[#BB86FC] text-black font-bold rounded hover:bg-[#9e6be0] transition mt-4;
+}
+
+/* Cart Grid */
+.cart-grid {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-8;
+}
+
+.cart-item-list {
+  @apply lg:col-span-2 space-y-4;
+}
+
+.cart-item {
+  @apply bg-[#1E1E1E] p-6 rounded-xl border border-gray-800 flex justify-between items-center;
+}
+
+.remove-btn {
+  @apply mt-3 text-red-400 hover:text-red-300 flex items-center text-sm transition;
+}
+
+/* Order Summary Box */
+.summary-box {
+  @apply lg:col-span-1;
+}
+
+.summary-card {
+  @apply bg-[#1E1E1E] p-6 rounded-xl border border-gray-800 sticky top-28;
+}
+
+.summary-title {
+  @apply text-xl font-semibold mb-4 border-b border-gray-700 pb-4;
+}
+
+.total-row {
+  @apply flex justify-between mb-6 text-xl font-bold text-white border-t border-gray-700 pt-4;
+}
+
+.checkout-btn {
+  @apply w-full py-3 bg-[#03DAC6] text-black font-bold rounded hover:bg-[#02b3a2] transition;
+}

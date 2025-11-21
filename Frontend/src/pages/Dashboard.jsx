@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Package, Calendar, Download, Clock } from 'lucide-react';
+import './Dashboard.css';
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
@@ -10,7 +11,6 @@ const Dashboard = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Protect Route & Fetch Data
     useEffect(() => {
         if (!user) {
             navigate('/login');
@@ -21,7 +21,7 @@ const Dashboard = () => {
             try {
                 const res = await fetch('/api/orders/myorders', {
                     headers: {
-                        'Authorization': `Bearer ${user.token}`, // Send the token to prove who we are
+                        'Authorization': `Bearer ${user.token}`,
                     },
                 });
                 const data = await res.json();
@@ -41,86 +41,104 @@ const Dashboard = () => {
         fetchOrders();
     }, [user, navigate]);
 
+    // --- NEW LOGIC: Determine User Status ---
+    const getUserStatus = () => {
+        if (user?.isAdmin) return 'Admin Access';
+
+        if (orders.length > 0) {
+            // 1. Sort orders by date (newest first)
+            // This ensures we show the current/latest plan if they bought multiple
+            const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            // 2. Get the plan name from the first item in the latest order
+            // Example: "Gold" -> "Gold Plan"
+            const latestPlanName = sortedOrders[0].orderItems[0]?.name;
+
+            return latestPlanName ? `${latestPlanName} Plan` : 'Standard Member';
+        }
+
+        return 'Free Member';
+    };
+
     if (!user) return null;
 
     return (
-        <div className="min-h-screen bg-[#0C0E12] pt-28 px-6 md:px-12 text-white font-sans">
+        <div className="dashboard-page">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="max-w-6xl mx-auto"
+                className="dashboard-container"
             >
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row justify-between items-end border-b border-gray-800 pb-6 mb-8">
-                    <div className="flex items-center gap-4">
+                <div className="dashboard-header">
+                    <div className="user-profile">
                         <img
                             src={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=BB86FC&color=000`}
                             alt="Profile"
-                            className="w-20 h-20 rounded-full border-4 border-[#1E1E1E] shadow-lg"
+                            className="profile-img"
                         />
                         <div>
                             <h1 className="text-3xl font-bold text-white">Hello, {user.name}</h1>
                             <p className="text-gray-400">{user.email}</p>
-                            <div className="flex gap-2 mt-2">
-                                <span className="px-3 py-1 bg-[#1E1E1E] text-[#03DAC6] text-xs rounded-full border border-[#03DAC6]/20">
-                                    {user.isAdmin ? 'Admin Access' : 'Premium Member'}
-                                </span>
+                            <div className="user-badge">
+                                {/* Display dynamic status here */}
+                                {getUserStatus()}
                             </div>
                         </div>
                     </div>
 
                     <button
                         onClick={logout}
-                        className="mt-4 md:mt-0 px-6 py-2 border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/10 transition text-sm font-medium"
+                        className="logout-button"
                     >
                         Sign Out
                     </button>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <div className="bg-[#1E1E1E] p-6 rounded-xl border border-gray-800">
-                        <div className="flex items-center gap-3 mb-2">
+                <div className="stats-grid">
+                    <div className="stat-card">
+                        <div className="stat-label">
                             <Package className="text-[#BB86FC] w-5 h-5" />
-                            <h3 className="text-gray-400 text-sm font-medium">Total Orders</h3>
+                            <h3>Total Orders</h3>
                         </div>
-                        <p className="text-3xl font-bold text-white">{loading ? "..." : orders.length}</p>
+                        <p className="stat-value">{loading ? "..." : orders.length}</p>
                     </div>
 
-                    <div className="bg-[#1E1E1E] p-6 rounded-xl border border-gray-800">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="stat-card">
+                        <div className="stat-label">
                             <Calendar className="text-[#03DAC6] w-5 h-5" />
-                            <h3 className="text-gray-400 text-sm font-medium">Member Since</h3>
+                            <h3>Member Since</h3>
                         </div>
                         <p className="text-xl font-medium text-white">
                             {new Date(user.createdAt || Date.now()).toLocaleDateString()}
                         </p>
                     </div>
 
-                    <div className="bg-[#1E1E1E] p-6 rounded-xl border border-gray-800">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="stat-card">
+                        <div className="stat-label">
                             <Clock className="text-[#60A5FA] w-5 h-5" />
-                            <h3 className="text-gray-400 text-sm font-medium">Last Login</h3>
+                            <h3>Last Login</h3>
                         </div>
                         <p className="text-xl font-medium text-white">Just now</p>
                     </div>
                 </div>
 
                 {/* Order History Section */}
-                <div className="bg-[#1E1E1E] rounded-xl border border-gray-800 overflow-hidden">
-                    <div className="p-6 border-b border-gray-800 flex justify-between items-center">
+                <div className="history-container">
+                    <div className="history-header">
                         <h2 className="text-xl font-semibold text-white">Order History</h2>
                     </div>
 
                     {loading ? (
-                        <div className="p-12 text-center text-gray-500">Loading your history...</div>
+                        <div className="empty-state">Loading your history...</div>
                     ) : orders.length === 0 ? (
-                        <div className="p-12 text-center text-gray-500">
+                        <div className="empty-state">
                             <p className="mb-4">You haven't purchased any plans yet.</p>
                             <button
                                 onClick={() => navigate('/#pricing')}
-                                className="px-6 py-2 bg-[#BB86FC] text-black font-bold rounded hover:bg-[#9e6be0] transition"
+                                className="empty-button"
                             >
                                 View Pricing
                             </button>
@@ -128,7 +146,7 @@ const Dashboard = () => {
                     ) : (
                         <div className="divide-y divide-gray-800">
                             {orders.map((order) => (
-                                <div key={order._id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white/5 transition">
+                                <div key={order._id} className="order-item">
 
                                     {/* Order Info */}
                                     <div className="flex-1">
@@ -136,7 +154,7 @@ const Dashboard = () => {
                                             <span className="text-[#03DAC6] font-bold text-lg">
                                                 {order.orderItems[0].name} Plan
                                             </span>
-                                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded border border-green-500/20">
+                                            <span className="order-badge">
                                                 Paid
                                             </span>
                                         </div>
@@ -152,16 +170,15 @@ const Dashboard = () => {
                                         <p className="text-xs text-gray-500">Via {order.paymentMethod}</p>
                                     </div>
 
-                                    {/* Action Button (Project Requirement: PDF Delivery) */}
+                                    {/* Action Button */}
                                     <div>
                                         <a
-                                            // For the resume project, you can link to a dummy PDF or handle the logic
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 alert("Downloading your Secure Setup Guide (PDF)...");
                                             }}
-                                            className="flex items-center gap-2 px-4 py-2 bg-[#2C2C2C] hover:bg-[#3C3C3C] text-white text-sm font-medium rounded-lg border border-gray-700 transition"
+                                            className="download-button"
                                         >
                                             <Download className="w-4 h-4" />
                                             Download Guide

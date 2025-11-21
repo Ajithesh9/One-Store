@@ -1,0 +1,74 @@
+.dashboard-page {
+  @apply min-h-screen bg-[#0C0E12] pt-28 px-6 md:px-12 text-white font-sans;
+}
+
+.dashboard-container {
+  @apply max-w-6xl mx-auto;
+}
+
+/* Header Section */
+.dashboard-header {
+  @apply flex flex-col md:flex-row justify-between items-end border-b border-gray-800 pb-6 mb-8;
+}
+
+.user-profile {
+  @apply flex items-center gap-4;
+}
+
+.profile-img {
+  @apply w-20 h-20 rounded-full border-4 border-[#1E1E1E] shadow-lg;
+}
+
+.user-badge {
+  @apply inline-flex px-3 py-1 bg-[#1E1E1E] text-[#03DAC6] text-xs rounded-full border border-[#03DAC6]/20 mt-2;
+}
+
+.logout-button {
+  @apply mt-4 md:mt-0 px-6 py-2 border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/10 transition text-sm font-medium;
+}
+
+/* Stats Grid */
+.stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-10;
+}
+
+.stat-card {
+  @apply bg-[#1E1E1E] p-6 rounded-xl border border-gray-800;
+}
+
+.stat-label {
+  @apply flex items-center gap-3 mb-2 text-gray-400 text-sm font-medium;
+}
+
+.stat-value {
+  @apply text-3xl font-bold text-white;
+}
+
+/* Order History */
+.history-container {
+  @apply bg-[#1E1E1E] rounded-xl border border-gray-800 overflow-hidden;
+}
+
+.history-header {
+  @apply p-6 border-b border-gray-800 flex justify-between items-center;
+}
+
+.empty-state {
+  @apply p-12 text-center text-gray-500;
+}
+
+.empty-button {
+  @apply px-6 py-2 bg-[#BB86FC] text-black font-bold rounded hover:bg-[#9e6be0] transition mt-4;
+}
+
+.order-item {
+  @apply p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white/5 transition;
+}
+
+.order-badge {
+  @apply text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded border border-green-500/20 ml-3;
+}
+
+.download-button {
+  @apply flex items-center gap-2 px-4 py-2 bg-[#2C2C2C] hover:bg-[#3C3C3C] text-white text-sm font-medium rounded-lg border border-gray-700 transition;
+}
