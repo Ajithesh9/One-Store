@@ -24,7 +24,6 @@ const protect = async (req, res, next) => {
   }
 };
 
-// NEW: Admin Middleware
 const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();

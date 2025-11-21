@@ -24,7 +24,7 @@ const addOrderItems = async (req, res) => {
       itemsPrice,
       taxPrice,
       totalPrice,
-      isPaid: true, // We assume it's paid if it reached here
+      isPaid: true,
       paidAt: Date.now(),
     });
 
@@ -32,7 +32,7 @@ const addOrderItems = async (req, res) => {
     res.status(201).json(createdOrder);
 
   } catch (error) {
-    console.error("Order Save Error:", error.message); // Logs to your VS Code terminal
+    console.error("Order Save Error:", error.message);
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
@@ -45,9 +45,25 @@ const getMyOrders = async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
     res.json(orders);
   } catch (error) {
-    console.error("Get Orders Error:", error);
     res.status(500).json({ message: "Error fetching orders" });
   }
 };
 
-module.exports = { addOrderItems, getMyOrders };
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Private/Admin
+const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate('user', 'id name email');
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching orders" });
+  }
+};
+
+// CRITICAL STEP: All 3 functions must be exported here
+module.exports = {
+    addOrderItems,
+    getMyOrders,
+    getOrders 
+};
